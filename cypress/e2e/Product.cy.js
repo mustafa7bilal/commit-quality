@@ -110,9 +110,6 @@ products.forEach((product) => {
 
 
 
-
-
-
 })
 it('filters products by name', () => {
   cy.visit('https://commitquality.com/');
