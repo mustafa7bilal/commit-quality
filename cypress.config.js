@@ -9,12 +9,10 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
-  reporter: "mochawesome",
+
+  reporter: "junit",
   reporterOptions: {
-    reportDir: "cypress/reports",
-    overwrite: false,
-    html: true,
-    json: true,
-    inlineAssets: true, // <-- Add this line
+    mochaFile: "cypress/reports/junit/test-[hash].xml",
+    toConsole: true,
   },
 });
