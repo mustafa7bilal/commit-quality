@@ -1,0 +1,41 @@
+/// <reference types="cypress" />
+import HomePage from '../../support/pageObjects/HomePage';
+import AddProductPage from '../../support/pageObjects/AddProductPage';
+import ProductTablePage from '../../support/pageObjects/ProductTablePage';
+
+describe('Product Tests', () => {
+  beforeEach(() => {
+    cy.fixture('productData').as('data');
+  });
+
+  it('should add a new product', function() {
+    HomePage.visit();
+    HomePage.verifyBannerLink();
+    HomePage.clickAddProduct();
+
+    AddProductPage.verifyPage();
+    AddProductPage.addProduct(
+      this.data.newProduct.name,
+      this.data.newProduct.price,
+      this.data.newProduct.date
+    );
+
+    ProductTablePage.verifyTableStructure();
+    cy.verifyProduct(
+      this.data.product5.id,
+      this.data.product5.name,
+      this.data.product5.price,
+      this.data.product5.date
+    );
+  });
+
+  it('should validate product with ID 3', function() {
+    HomePage.visit();
+    cy.verifyProduct(
+      this.data.product3.id,
+      this.data.product3.name,
+      this.data.product3.price,
+      this.data.product3.date
+    );
+  });
+});

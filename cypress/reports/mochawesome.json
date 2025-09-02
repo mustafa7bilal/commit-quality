@@ -1,0 +1,183 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-08-31T15:51:53.133Z",
+    "end": "2025-08-31T15:51:57.437Z",
+    "duration": 4304,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "907f2fa9-ca9f-42ba-aedd-6f2b0e6c1dd8",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Product.cy.js",
+      "file": "cypress\\e2e\\Product.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "4d3f0005-cdf2-4ec5-a64b-a00f90c2b665",
+          "title": "Add Product",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should add a product",
+              "fullTitle": "Add Product should add a product",
+              "timedOut": null,
+              "duration": 2769,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/');\ncy.visit('/');\n// log the url and check if href exists\ncy.get('a[data-testid=\"banner-advert-link\"]').should('have.attr', 'href').then(href => {\n  cy.log(\"Link:\", href);\n});\ncy.get('a[data-testid=\"banner-advert-link\"]').invoke('text').then(text => {\n  cy.log(\"Anchor text:\", text);\n});\ncy.get('a[data-testid=\"banner-advert-link\"]').invoke('attr', 'href').then(link => {\n  cy.request(link).then(response => {\n    expect(response.status).to.eq(200);\n  });\n});\ncy.get('[data-testid=\"add-a-product-button\"]').should('be.visible').contains('Add a Product').click();\ncy.url().should('include', '/add-product');\ncy.get('h1').should('be.visible').contains('Add');\ncy.get('form').should('be.visible');\ncy.get('[data-testid=\"product-textbox\"]').should('have.attr', 'placeholder', 'Enter a product name').type('Testing Product 5');\ncy.get('[data-testid=\"price-textbox\"]').should('have.attr', 'placeholder', 'Enter a price').type('10000');\ncy.get('[data-testid=\"date-stocked\"]').type('2025-08-29').should('have.value', '2025-08-29');\ncy.get('[data-testid=\"submit-form\"]').click();\ncy.url('https://commitquality.com/');\ncy.get('.product-list-container').should('be.visible');\ncy.get('.product-list-container').should('have.length.greaterThan', 0);\ncy.get('.product-list-container thead tr').within(() => {\n  cy.contains('th', 'ID');\n  cy.contains('th', 'Name');\n  cy.contains('th', 'Price');\n  cy.contains('th', 'Date Stocked');\n});",
+              "err": {},
+              "uuid": "e2cfae6d-0f25-4003-8549-6d655d9d4279",
+              "parentUUID": "4d3f0005-cdf2-4ec5-a64b-a00f90c2b665",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [
+            {
+              "uuid": "a24f9e56-346d-46b7-a725-452ec362a965",
+              "title": "Product Table Validation",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "Check each row has valid structure",
+                  "fullTitle": "Add Product Product Table Validation Check each row has valid structure",
+                  "timedOut": null,
+                  "duration": 871,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.visit('https://commitquality.com/');\ncy.get('tbody tr').each($row => {\n  cy.wrap($row).find('td').should('have.length', 4);\n  cy.wrap($row).find('td[data-testid=\"id\"]').invoke('text').then(text => {\n    expect(Number(text)).to.be.a('number');\n  });\n  cy.wrap($row).find('td[data-testid=\"name\"]').invoke('text').should('not.be.empty');\n  cy.wrap($row).find('td[data-testid=\"price\"]').invoke('text').then(price => {\n    expect(Number(price)).to.be.greaterThan(0);\n  });\n  cy.wrap($row).find('td[data-testid=\"dateStocked\"]').invoke('text').then(date => {\n    const regex = /^\\d{4}-\\d{2}-\\d{2}$/;\n    expect(date).to.match(regex);\n  });\n});",
+                  "err": {},
+                  "uuid": "3320197e-a9fc-4885-aeda-250711f9f55f",
+                  "parentUUID": "a24f9e56-346d-46b7-a725-452ec362a965",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "displays correct data for product with ID 5",
+                  "fullTitle": "Add Product Product Table Validation displays correct data for product with ID 5",
+                  "timedOut": null,
+                  "duration": 205,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.visit('https://commitquality.com/');\ncy.get('[data-testid=\"product-row-5\"]').within(() => {\n  cy.get('[data-testid=\"id\"]').should('contain', '5');\n  cy.get('[data-testid=\"name\"]').should('contain', 'Product 1');\n  cy.get('[data-testid=\"price\"]').should('contain', '10');\n  cy.get('[data-testid=\"dateStocked\"]').should('contain', '2021-01-01');\n});",
+                  "err": {},
+                  "uuid": "e45ba2d8-fcfd-410f-b287-49753a5092a9",
+                  "parentUUID": "a24f9e56-346d-46b7-a725-452ec362a965",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "filters products by name",
+                  "fullTitle": "Add Product Product Table Validation filters products by name",
+                  "timedOut": null,
+                  "duration": 208,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.visit('https://commitquality.com/');\ncy.get('[data-testid^=\"product-row\"]').each($row => {\n  const id = $row.find('[data-testid=\"id\"]').text().trim();\n  const name = $row.find('[data-testid=\"name\"]').text().trim();\n  if (id === '3' && name === 'Product 1') {\n    // Do something with this specific row\n    cy.wrap($row).within(() => {\n      cy.get('[data-testid=\"price\"]').should('have.text', '10');\n      cy.get('[data-testid=\"dateStocked\"]').should('have.text', '2021-01-01');\n    });\n  }\n});",
+                  "err": {},
+                  "uuid": "2f7a5a20-a57b-49b5-a6c8-347dc5db15d8",
+                  "parentUUID": "a24f9e56-346d-46b7-a725-452ec362a965",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "3320197e-a9fc-4885-aeda-250711f9f55f",
+                "e45ba2d8-fcfd-410f-b287-49753a5092a9",
+                "2f7a5a20-a57b-49b5-a6c8-347dc5db15d8"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 1284,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [
+            "e2cfae6d-0f25-4003-8549-6d655d9d4279"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2769,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
