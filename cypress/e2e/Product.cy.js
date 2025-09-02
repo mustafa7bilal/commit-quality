@@ -77,14 +77,42 @@ describe('Add Product', () => {
           });
       });
     });
-    it('displays correct data for product with ID 5', () => {
-      cy.visit('https://commitquality.com/');
-  cy.get('[data-testid="product-row-5"]').within(() => {
-    cy.get('[data-testid="id"]').should('contain', '5')
-    cy.get('[data-testid="name"]').should('contain', 'Product 1')
-    cy.get('[data-testid="price"]').should('contain', '10')
-    cy.get('[data-testid="dateStocked"]').should('contain', '2021-01-01')
+    it('displays correct data for product with ID 9', () => {
+cy.visit('https://commitquality.com/');
+
+// Directly target product-row-9
+cy.get('[data-testid="product-row-9"]').within(() => {
+  cy.get('[data-testid="id"]').should('contain', '9')
+  cy.get('[data-testid="name"]').should('contain', 'Product 2')
+  cy.get('[data-testid="price"]').should('contain', '15')
+  cy.get('[data-testid="dateStocked"]').should('contain', '2021-02-01')
+})
+
+})
+it('validate multiple product dynamically',()=>{
+cy.visit('https://commitquality.com/');
+const products = [
+  { id: '11', name: 'Product 2', price: '15', date: '2021-02-01' },
+  { id: '10', name: 'Product 1', price: '10', date: '2021-01-01' },
+  { id: '9',  name: 'Product 2', price: '15', date: '2021-02-01' },
+]
+
+
+
+products.forEach((product) => {
+  cy.get(`[data-testid="product-row-${product.id}"]`).within(() => {
+    cy.get('[data-testid="id"]').should('contain', product.id)
+    cy.get('[data-testid="name"]').should('contain', product.name)
+    cy.get('[data-testid="price"]').should('contain', product.price)
+    cy.get('[data-testid="dateStocked"]').should('contain', product.date)
   })
+})
+
+
+
+
+
+
 })
 it('filters products by name', () => {
   cy.visit('https://commitquality.com/');

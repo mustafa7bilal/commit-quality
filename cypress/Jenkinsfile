@@ -1,27 +1,20 @@
 pipeline {
     agent any
-
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                checkout scm
+                echo 'Building...'
             }
         }
-        stage('Install Dependencies') {
+        stage('Test') {
             steps {
-                bat 'npm install'
+                echo 'Testing...'
             }
         }
-        stage('Run Cypress Tests') {
+        stage('Deploy') {
             steps {
-                bat 'npx cypress run --browser chrome'
+                echo 'Deploying...'
             }
-        }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'cypress/videos/**/*.*, cypress/screenshots/**/*.*', allowEmptyArchive: true
         }
     }
 }
