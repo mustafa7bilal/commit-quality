@@ -48,9 +48,8 @@ pipeline {
                 // Wait for file system to flush, list files for debug
                 bat 'timeout /t 2'
                 bat 'dir cypress\\reports'
-                // Merge all mochawesome JSONs (works for both single and multiple files)
-                bat 'npx mochawesome-merge cypress\\reports\\*.json > cypress\\reports\\output.json'
-                // Generate HTML report from merged output
+                // Use --output instead of > redirection
+                bat 'npx mochawesome-merge cypress\\reports\\*.json --output cypress\\reports\\output.json'
                 bat 'npx marge cypress\\reports\\output.json --reportDir cypress\\reports'
             }
         }
