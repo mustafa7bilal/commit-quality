@@ -46,8 +46,7 @@ pipeline {
 
         stage('Generate HTML Report') {
             steps {
-                // Merge all JSONs and create HTML
-                bat 'npx mochawesome-merge cypress\\reports\\mochawesome_*.json > cypress\\reports\\output.json'
+                bat 'npx mochawesome-merge cypress\\reports\\mochawesome.json > cypress\\reports\\output.json'
                 bat 'npx marge cypress\\reports\\output.json --reportDir cypress\\reports'
             }
         }
