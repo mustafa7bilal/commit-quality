@@ -16,21 +16,34 @@ pipeline {
                 echo "Building the application"
             }
         }
+
         stage('Install dependencies') {
             steps {
-                bat "npm i"
+                bat "npm install"
             }
         }
+
         stage('Install Cypress binary') {
             steps {
                 bat "npx cypress install"
             }
         }
-        stage('Testing') {
+
+        stage('Run Cypress Tests') {
             steps {
-                bat "npx cypress run --headed --browser ${params.BROWSER} --spec ${params.SPEC}"
+                // Run tests with mochawesome reporter
+                bat "npx cypress run --headed --browser ${params.BROWSER} --spec ${params.SPEC} --reporter mochawesome --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true"
             }
         }
+
+        stage('Generate HTML Report') {
+            steps {
+                // Merge all JSONs and create HTML
+                bat "npx mochawesome-merge cypress/reports/*.json > cypress/reports/output.json"
+                bat "npx marge cypress/reports/output.json -f mochawesome -o cypress/reports"
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo "Deploy the application"
@@ -40,7 +53,14 @@ pipeline {
 
     post {
         always {
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: true, reportDir: 'cypress/reports', reportFiles: 'mochawesome.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'cypress/reports',
+                reportFiles: 'mochawesome.html',
+                reportName: 'HTML Report'
+            ])
         }
     }
 }
