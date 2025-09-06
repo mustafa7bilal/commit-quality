@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
+
     parameters {
         string(name: 'SPEC', defaultValue: "cypress/e2e/**/*.js", description: "Enter the scripts path that you want to execute")
         choice(name: 'BROWSER', choices: ['chrome', 'firefox', 'edge'], description: "Choose the browser")
@@ -24,7 +28,7 @@ pipeline {
         }
         stage('Testing') {
             steps {
-                bat "npx cypress run --browser ${params.BROWSER} --spec ${params.SPEC}"
+                bat "npx cypress run --headed --browser ${params.BROWSER} --spec ${params.SPEC}"
             }
         }
         stage('Deploy') {
