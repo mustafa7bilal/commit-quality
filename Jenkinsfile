@@ -46,7 +46,7 @@ pipeline {
         stage('Generate HTML Report') {
             steps {
                 // Wait for file system to flush, list files for debug
-                bat 'timeout /t 2'
+                bat 'ping -n 3 127.0.0.1 > nul'
                 bat 'dir cypress\\reports'
                 // Use --output instead of > redirection
                 bat 'npx mochawesome-merge cypress\\reports\\*.json --output cypress\\reports\\output.json'
