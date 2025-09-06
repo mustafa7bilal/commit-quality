@@ -10,9 +10,11 @@ module.exports = defineConfig({
     },
   },
 
-  reporter: "junit",
+  reporter: "mochawesome",
   reporterOptions: {
-    mochaFile: "cypress/reports/junit/test-[hash].xml",
-    toConsole: true,
+    reportDir: "cypress/reports",
+    overwrite: true,
+    html: true,
+    json: false,
   },
 });
