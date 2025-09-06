@@ -31,22 +31,26 @@ pipeline {
 
         stage('Clean Reports') {
             steps {
-                bat 'del /Q cypress\\reports\\*.json'
-                bat 'del /Q cypress\\reports\\output.json'
-                bat 'del /Q cypress\\reports\\mochawesome.html'
+                bat 'if exist cypress\\reports del /Q cypress\\reports\\*.*'
+                bat 'if not exist cypress\\reports mkdir cypress\\reports'
             }
         }
 
         stage('Run Cypress Tests') {
             steps {
-                // Run tests with mochawesome reporter
+                // Run tests with mochawesome reporter, unique file per spec for parallel/serial support
                 bat "npx cypress run --headed --browser ${params.BROWSER} --spec ${params.SPEC} --reporter mochawesome --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true"
             }
         }
 
         stage('Generate HTML Report') {
             steps {
-                bat 'npx mochawesome-merge cypress\\reports\\mochawesome.json > cypress\\reports\\output.json'
+                // Wait for file system to flush, list files for debug
+                bat 'timeout /t 2'
+                bat 'dir cypress\\reports'
+                // Merge all mochawesome JSONs (works for both single and multiple files)
+                bat 'npx mochawesome-merge cypress\\reports\\*.json > cypress\\reports\\output.json'
+                // Generate HTML report from merged output
                 bat 'npx marge cypress\\reports\\output.json --reportDir cypress\\reports'
             }
         }
