@@ -29,6 +29,14 @@ pipeline {
             }
         }
 
+        stage('Clean Reports') {
+            steps {
+                bat 'del /Q cypress\\reports\\*.json'
+                bat 'del /Q cypress\\reports\\output.json'
+                bat 'del /Q cypress\\reports\\mochawesome.html'
+            }
+        }
+
         stage('Run Cypress Tests') {
             steps {
                 // Run tests with mochawesome reporter
@@ -39,8 +47,8 @@ pipeline {
         stage('Generate HTML Report') {
             steps {
                 // Merge all JSONs and create HTML
-                bat "npx mochawesome-merge cypress/reports/*.json > cypress/reports/output.json"
-                bat "npx marge cypress/reports/output.json -f mochawesome -o cypress/reports"
+                bat 'npx mochawesome-merge cypress\\reports\\mochawesome_*.json > cypress\\reports\\output.json'
+                bat 'npx marge cypress\\reports\\output.json --reportDir cypress\\reports'
             }
         }
 
